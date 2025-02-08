@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  php-fpm:
+    #image: php:8.0.30-fpm
+    image: exozet/php-fpm:8.2.5-root
+    container_name: php-fpm
+    restart: always
+    volumes:
+      - ./caddy/www:/var/www/html
+        #  - ./php/ini:/usr/local/etc/php/conf.d
+    networks:
+      - app-network
+
+  mysql:
+    image: mysql:8.0.39
+    container_name: mysql
+    restart: always
+    privileged: true
+    environment:
+      MYSQL_ROOT_PASSWORD: 'ovVK<h&TW7_Z'
+      MYSQL_DATABASE: u319353809_xcmsinstall
+        #  MYSQL_USER: user
+        #   MYSQL_PASSWORD: password
+    volumes:
+      - ./mysql-data:/var/lib/mysql
+    networks:
+      - app-network
+
+  caddy:
+    image: caddy
+    container_name: caddy
+    restart: always
+    cap_add:
+      - NET_ADMIN
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./caddy/conf:/etc/caddy
+        # - ./caddy/www:/usr/share/caddy
+      - ./caddy/www:/var/www/html
+    environment:
+      - CADDY_DOCKER_GEN=true
+    depends_on:
+      - php-fpm
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
