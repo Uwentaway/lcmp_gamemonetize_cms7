@@ -23,11 +23,12 @@
 
 ```bash
 git clone https://github.com/Uwentaway/lcmp_gamemonetize_cms7
-
+```
 ### 2. 进入项目的目录：
 ```bash
 cd lcmp_gamemonetize_cms7
-
+```
 ### 3.使用 Docker Compose 启动所有服务：
 ```bash
 docker-compose up -d
+```
